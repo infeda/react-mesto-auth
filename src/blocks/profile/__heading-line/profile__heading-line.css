@@ -1,0 +1,13 @@
+.profile__heading-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+
+}
+
+@media (max-width: 730px) {
+  .profile__heading-line {
+    justify-content: center;
+    max-width: 100%;
+  }
+}

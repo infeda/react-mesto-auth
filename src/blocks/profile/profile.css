@@ -1,0 +1,25 @@
+.profile {
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+  "avatar profile-info add-button";
+  grid-template-columns: 120px calc(100% - 120px - 150px - 2 * 12px) 150px;
+  grid-template-rows: 1fr;
+  column-gap: 12px;
+  align-items: center;
+  margin-top: 38px;
+  padding: 0;
+}
+
+@media (max-width: 730px) {
+  .profile {
+    grid-template-areas:
+    "avatar"
+    "profile-info"
+    "add-button";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    column-gap: 0;
+    justify-items: center;
+  }
+}
