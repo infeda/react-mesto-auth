@@ -1,0 +1,14 @@
+.profile__info {
+  grid-area: profile-info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+}
+
+@media (max-width: 730px) {
+  .profile__info {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}

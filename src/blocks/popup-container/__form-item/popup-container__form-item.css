@@ -1,0 +1,29 @@
+.popup-container__form-item {
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  margin: 30px 0 0 0;
+  font-size: 14px;
+  line-height: 17px;
+  font-family: inherit;
+  outline: none;
+}
+
+@media (max-width: 535px) {
+  .popup-container__form-item {
+    margin-top: 43px;
+  }
+}
+
+/* .popup-container__form-item_invalid {
+  border-bottom: 1px solid #ff0000;
+} */
+
+.popup-container__form-item:required {
+  box-shadow: none;
+}
+
+
+
