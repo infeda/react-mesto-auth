@@ -19,15 +19,16 @@
           setAvatar(initialUser.avatar);
           setUserName(initialUser.name);
           setUserDescription(initialUser.about);
-        });
+        })
+        .catch(err => console.log(err))
       }, []);
 
     React.useEffect(() => {
       api.getInitialCards()
         .then((cards) => {
           setCards(cards);
-          console.log(cards);
         })
+        .catch(err => console.log(err))
     }, []);
 
     return (
@@ -53,7 +54,11 @@
           </button>
         </div>
         <section className="elements">
-          <Card cards={cards} onCardClick={props.onCardClick} />
+          {cards.map((card) => {
+            return (
+            <Card card={card} onCardClick={() => props.onCardClick(card)} key={card.id} />
+            )}
+          )}
         </section>
       </main>
     )
