@@ -8,7 +8,7 @@
 
   function Main(props) {
 
-    const [avatar, setAvatar] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
     const [userName, setUserName] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
     const [cards, setCards] = React.useState([]);
@@ -16,7 +16,7 @@
     React.useEffect(() => {
       api.getUserInfo()
         .then((initialUser) => {
-          setAvatar(initialUser.avatar);
+          setUserAvatar(initialUser.avatar);
           setUserName(initialUser.name);
           setUserDescription(initialUser.about);
         })
@@ -35,7 +35,7 @@
       <main className="content">
         <div className="profile">
           <div className="profile__avatar-container" onClick={props.onEditAvatar}>
-            <img className="profile__avatar" src={avatar} alt="аватар" />
+            <img className="profile__avatar" src={userAvatar} alt="аватар" />
             <div className="profile__avatar-overlay">
               <img className="profile__avatar-edit" src={editAvatar} alt="поменять аватар" />
             </div>
