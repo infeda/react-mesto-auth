@@ -1,4 +1,3 @@
-import editAvatar from '../images/edit-avatar.png';
 import editButtonPen from '../images/edit-button__pen.svg';
 import addButton from '../images/add-button.svg';
 import api from '../utils/Api.js';
@@ -37,7 +36,7 @@ function Main(props) {
         <div className="profile__avatar-container" onClick={props.onEditAvatar}>
           <img className="profile__avatar" src={userAvatar} alt="аватар" />
           <div className="profile__avatar-overlay">
-            <img className="profile__avatar-edit" src={editAvatar} alt="поменять аватар" />
+            <img className="profile__avatar-edit" src={editButtonPen} alt="поменять аватар" />
           </div>
         </div>
         <div className="profile__info">
