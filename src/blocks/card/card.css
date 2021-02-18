@@ -5,4 +5,7 @@
   color: #000000;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
