@@ -1,7 +1,6 @@
 import closeIcon from '../images/Close-Icon.svg';
 
 function PopupWithForm(props) {
-
   return (
     <div className={ props.isOpen ?  `popup popup_${props.name} popup_opened` : `popup popup_${props.name}`}>
       <div className="popup-container">

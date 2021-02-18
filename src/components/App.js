@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../index.css';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
@@ -97,21 +97,8 @@ function App() {
       </PopupWithForm>
 
       <ImagePopup card={selectedCard} onCLose={closeAllPopups}/>
-      </div>
-      <template id="card-template">
-        <article className="card">
-          <img className="card__image" src="//:0" alt="null" />
-          <div className="card__content">
-            <h2 className="card__heading"></h2>
-            <div className="card__like-section">
-              <button className="card__like" type="button" name="like-button"></button>
-              <p className="card__like-counter">0</p>
-            </div>
-          </div>
-          <button className="card__delete" type="button" name="delete-button"></button>
-        </article>
-      </template>
-  
+
+      </div> 
     </>
   );
 };
