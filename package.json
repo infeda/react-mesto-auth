@@ -1,6 +1,11 @@
 {
   "name": "mesto-react",
   "version": "0.1.0",
+  "description": "project Mesto on react",
+  "author": {
+    "name": "Ingrida Fedaraviciute",
+    "email": "ingrida.surname@gmail.com"
+  },
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
