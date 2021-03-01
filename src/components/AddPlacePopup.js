@@ -33,7 +33,7 @@ export default function AddPlacePopup(props) {
             <span id="link-error" className="popup-container__form-item-error"></span>
         </label>
       </fieldset>
-      <button type="submit" className="popup-container__submit-button popup-container__submit-button_inactive" name="add-submit-button">Создать</button>
+      <button type="submit" className="popup-container__submit-button" name="add-submit-button">Создать</button>
     </PopupWithForm>
   )
 }

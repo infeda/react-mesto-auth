@@ -2,7 +2,7 @@ import React from 'react';
 import '../index.css';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import EditProfilePopup from './EditUserPopup';
+import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import Header from './Header';
