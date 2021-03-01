@@ -30,6 +30,7 @@ function Main(props) {
     const likeRequest = !isLiked ? api.likeCard(card._id) : api.deleteLikeCard(card._id);
     likeRequest
       .then((newCard) => {
+        console.log(newCard);
         // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
         const newCards = cards.map((c) => c._id === card._id ? newCard : c);
         // Обновляем стейт
@@ -37,6 +38,15 @@ function Main(props) {
       })
       .catch((err) => console.log(err));
   } 
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+      .then(() => {
+        const newCards = cards.filter(item => !(item._id === card._id));
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
+  }
 
   return (
     <main className="content">
@@ -63,7 +73,7 @@ function Main(props) {
       <section className="elements">
         {cards.map((card) => {
           return (
-          <Card card={card} onCardClick={() => props.onCardClick(card)} key={card._id} onCardLike={() => handleCardLike(card)} />
+          <Card card={card} onCardClick={() => props.onCardClick(card)} key={card._id} onCardLike={() => handleCardLike(card)} onCardDelete={() => handleCardDelete(card)} />
           )}
         )}
       </section>

@@ -30,7 +30,7 @@ export default function Card(props) {
           <p className="card__like-counter">{props.card.likes.length}</p>
         </div>
       </div>
-      <button className={cardDeleteButtonClassName} type="button" name="delete-button"></button>
+      <button className={cardDeleteButtonClassName} type="button" name="delete-button" onClick={props.onCardDelete} ></button>
     </article>
   )
 }
