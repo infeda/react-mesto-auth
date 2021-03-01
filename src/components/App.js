@@ -4,12 +4,11 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditUserPopup';
 import EditAvatarPopup from './EditAvatarPopup';
-
+import AddPlacePopup from './AddPlacePopup';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import api from '../utils/Api.js';
-
 
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
@@ -22,6 +21,17 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState('');
 
+  const [cards, setCards] = React.useState([]);
+
+  React.useEffect(() => {
+    api.getInitialCards()
+      .then((cards) => {
+        setCards(cards);
+      })
+      .catch(err => console.log(err))
+    }, []
+  );
+
   React.useEffect(() => {
     api.getUserInfo()
       .then((initialUser) => {
@@ -30,6 +40,31 @@ function App() {
       .catch(err => console.log(err))
     }, []
   )
+
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    const likeRequest = !isLiked ? api.likeCard(card._id) : api.deleteLikeCard(card._id);
+    likeRequest
+      .then((newCard) => {
+        // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+        const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+        // Обновляем стейт
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
+  } 
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+      .then(() => {
+        const newCards = cards.filter(item => !(item._id === card._id));
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
+  }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -70,32 +105,34 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function handleAddPlaceSubmit(info) {
+    api.addNewCard(info.name, info.link)
+      .then((card) => {
+        setCards([card, ...cards]);
+      })
+      .catch((err) => console.log(err));
+  }
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
       <Header />
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} />
+      <Main 
+        onEditProfile={handleEditProfileClick} 
+        onAddPlace={handleAddPlaceClick} 
+        onEditAvatar={handleEditAvatarClick} 
+        onCardClick={handleCardClick}
+        cards={cards}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
+        />
+
       <Footer />
 
       <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
 
-      <PopupWithForm title="Новое место" name="add" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
-       <fieldset className="popup-container__input-container">
-          <label className="popup-container__field">
-            <input type="text" name="heading" id="heading" defaultValue="" minLength="2" maxLength="30"
-              className="popup-container__form-item popup-container__form-item_el_heading" placeholder="Название"
-              required />
-            <span id="heading-error" className="popup-container__form-item-error"></span>
-          </label>
-          <label className="popup-container__field">
-            <input type="url" name="link" id="link" defaultValue=""
-              className="popup-container__form-item popup-container__form-item_el_link" placeholder="Ссылка на картинку"
-              required />
-              <span id="link-error" className="popup-container__form-item-error"></span>
-          </label>
-        </fieldset>
-        <button type="submit" className="popup-container__submit-button popup-container__submit-button_inactive" name="add-submit-button">Создать</button>
-      </PopupWithForm>
+      <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
       <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 

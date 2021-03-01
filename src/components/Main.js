@@ -1,6 +1,5 @@
 import editButtonPen from '../images/edit-button__pen.svg';
 import addButton from '../images/add-button.svg';
-import api from '../utils/Api.js';
 import Card from './Card.js'
 
 import React from 'react';
@@ -9,43 +8,7 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function Main(props) {
 
-  const [cards, setCards] = React.useState([]);
-
   const currentUser = React.useContext(CurrentUserContext);
-
-  React.useEffect(() => {
-    api.getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch(err => console.log(err))
-    }, []
-  );
-
-  function handleCardLike(card) {
-    // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    const likeRequest = !isLiked ? api.likeCard(card._id) : api.deleteLikeCard(card._id);
-    likeRequest
-      .then((newCard) => {
-        // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-        const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-        // Обновляем стейт
-        setCards(newCards);
-      })
-      .catch((err) => console.log(err));
-  } 
-
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
-      .then(() => {
-        const newCards = cards.filter(item => !(item._id === card._id));
-        setCards(newCards);
-      })
-      .catch((err) => console.log(err));
-  }
 
   return (
     <main className="content">
@@ -70,9 +33,9 @@ function Main(props) {
         </button>
       </div>
       <section className="elements">
-        {cards.map((card) => {
+        {props.cards.map((card) => {
           return (
-          <Card card={card} onCardClick={() => props.onCardClick(card)} key={card._id} onCardLike={() => handleCardLike(card)} onCardDelete={() => handleCardDelete(card)} />
+          <Card card={card} onCardClick={() => props.onCardClick(card)} key={card._id} onCardLike={() => props.onCardLike(card)} onCardDelete={() => props.onCardDelete(card)} />
           )}
         )}
       </section>
