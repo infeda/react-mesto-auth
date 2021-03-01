@@ -2,11 +2,13 @@ import React from 'react';
 import '../index.css';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditUserPopup';
 
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import api from '../utils/Api.js';
+
 
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
@@ -51,6 +53,14 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleUpdateUser(user) {
+    api.editUserInfo([user.name, user.about])
+      .then((userInfo) => {
+        setCurrentUser(userInfo);
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -58,23 +68,7 @@ function App() {
       <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} />
       <Footer />
 
-      <PopupWithForm title="Редактировать профиль" name="edit" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
-        <fieldset className="popup-container__input-container">
-          <label className="popup-container__field">
-            <input type="text" name="name" id="name" defaultValue="" minLength="2" maxLength="40"
-              className="popup-container__form-item popup-container__form-item_el_name" placeholder="Введите своё имя"
-              required />
-            <span id="name-error" className="popup-container__form-item-error"></span>
-          </label>
-          <label className="popup-container__field">
-            <input type="text" name="text" id="text" defaultValue="" minLength="2" maxLength="200"
-              className="popup-container__form-item popup-container__form-item_el_text" placeholder="Введите описание"
-              required />
-            <span id="text-error" className="popup-container__form-item-error"></span>
-          </label>
-        </fieldset>
-        <button type="submit" className="popup-container__submit-button" name="edit-submit-button">Сохранить</button>
-      </PopupWithForm>
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
 
       <PopupWithForm title="Новое место" name="add" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
        <fieldset className="popup-container__input-container">

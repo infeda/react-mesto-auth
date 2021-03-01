@@ -30,7 +30,6 @@ function Main(props) {
     const likeRequest = !isLiked ? api.likeCard(card._id) : api.deleteLikeCard(card._id);
     likeRequest
       .then((newCard) => {
-        console.log(newCard);
         // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
         const newCards = cards.map((c) => c._id === card._id ? newCard : c);
         // Обновляем стейт
