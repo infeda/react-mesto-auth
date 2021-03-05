@@ -24,22 +24,17 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api.getInitialCards()
-      .then((cards) => {
+    Promise.all([
+      api.getInitialCards(),
+      api.getUserInfo()
+    ])
+      .then(([cards, initialUser]) => {
         setCards(cards);
+        setCurrentUser(initialUser);
       })
       .catch(err => console.log(err))
     }, []
   );
-
-  React.useEffect(() => {
-    api.getUserInfo()
-      .then((initialUser) => {
-        setCurrentUser(initialUser)
-      })
-      .catch(err => console.log(err))
-    }, []
-  )
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
