@@ -10,8 +10,11 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import api from '../utils/api.js';
+import ProtectedRoute from './ProtectedRoute';
 
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import Register from './Register';
+import Login from './Login';
 
 function App() {
 
@@ -116,57 +119,49 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Switch>
-          <Header />
-          <ProtectedRoute path="/" loggedIn={loggedIn} component={Main}
-            onEditProfile={handleEditProfileClick} 
-            onAddPlace={handleAddPlaceClick} 
-            onEditAvatar={handleEditAvatarClick} 
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
-          <Route path="/sign-in">
 
-          </Route>
-          <Route path="sign-up">
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className="page">
 
-          </Route>
-          <Route>
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="sign-in" /> }
-          </Route>
+            <Header loggedIn={loggedIn} />
+            <Switch>
+              <ProtectedRoute path="/home" loggedIn={loggedIn} component={Main}
+                onEditProfile={handleEditProfileClick} 
+                onAddPlace={handleAddPlaceClick} 
+                onEditAvatar={handleEditAvatarClick} 
+                onCardClick={handleCardClick}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+              />
+              <Route path="/sign-in">
+                <Login />
+              </Route>
+              <Route path="/sign-up">
+                <Register />
+              </Route>
+              <Route path="/">
+                {loggedIn ? <Redirect to="/home" /> : <Redirect to="/sign-up" /> }
+              </Route>
+            </Switch>
 
+            <Footer loggedIn={loggedIn} />
 
-          <Main 
-            onEditProfile={handleEditProfileClick} 
-            onAddPlace={handleAddPlaceClick} 
-            onEditAvatar={handleEditAvatarClick} 
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            />
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
 
-          <Footer />
-        </Switch>
+          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
+          <PopupWithForm title="Вы уверены?" name="delete">
+            <button type="submit" className="popup-container__submit-button" name="delete-submit-button">Да</button>
+          </PopupWithForm>
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+          <ImagePopup card={selectedCard} onCLose={closeAllPopups}/>
 
-        <PopupWithForm title="Вы уверены?" name="delete">
-          <button type="submit" className="popup-container__submit-button" name="delete-submit-button">Да</button>
-        </PopupWithForm>
+        </div> 
+      </CurrentUserContext.Provider>
 
-        <ImagePopup card={selectedCard} onCLose={closeAllPopups}/>
-
-      </div> 
-    </CurrentUserContext.Provider>
   );
 };
 
