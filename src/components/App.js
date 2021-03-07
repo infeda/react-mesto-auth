@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import '../index.css';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
@@ -10,6 +10,7 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import api from '../utils/api.js';
+import * as auth from '../utils/auth.js';
 import ProtectedRoute from './ProtectedRoute';
 
 import CurrentUserContext from '../contexts/CurrentUserContext';
@@ -21,18 +22,36 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [registerErr, setRegisterError] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
 
   const [currentUser, setCurrentUser] = React.useState({name: '', avatar: '', about: ''});
+  const [email, setEmail] = React.useState({email: ''});
 
   const [cards, setCards] = React.useState([]);
 
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const history = useHistory();
+
+  function checkToken() {
+    let jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth.checkToken(jwt)
+        .then(res => {
+          if(res) {
+            setEmail({email: res.email});
+            setLoggedIn(true);
+          }
+        })
+        .catch(() => history.push('/sign-in'));
+    }
+  }
 
   React.useEffect(() => {
     Promise.all([
       api.getInitialCards(),
-      api.getUserInfo()
+      api.getUserInfo(),
+      checkToken()
     ])
       .then(([cards, initialUser]) => {
         setCards(cards);
@@ -41,6 +60,7 @@ function App() {
       .catch(err => console.log(err))
     }, []
   );
+
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -114,8 +134,39 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleLogin() {
-    setLoggedIn(true);
+  function handleLogin({email, password}) {
+    return (
+      auth.login(email, password)
+        .then(res => {
+          if(!res || res.statusCode === 400 || res.statusCode === 401 ) {
+            setRegisterError(true);
+          };
+          if(res) {
+            console.log(res);
+            setLoggedIn(true);
+            localStorage.setItem('jwt', res.token);
+          }
+        })
+    )
+  }
+
+  function handleRegister({email, password}) {
+    return (
+      auth.register(email, password)
+        .then(res => {
+          if(!res || res.statusCode === 400) {
+            setRegisterError(true);
+          };
+          return res;
+        })
+      )
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+    setEmail({email: ''});
+    setLoggedIn(false);
+    history.push('/sign-in')
   }
 
   return (
@@ -133,12 +184,13 @@ function App() {
                 cards={cards}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
+                onSignOut={handleSignOut}
               />
               <Route path="/sign-in">
-                <Login />
+                <Login onLogin={handleLogin} setLoggedIn={setLoggedIn} />
               </Route>
               <Route path="/sign-up">
-                <Register />
+                <Register onRegister={handleRegister} setLoggedIn={setLoggedIn} />
               </Route>
               <Route path="/">
                 {loggedIn ? <Redirect to="/home" /> : <Redirect to="/sign-up" /> }

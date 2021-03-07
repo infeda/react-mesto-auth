@@ -5,15 +5,15 @@ export default function Form(props) {
   return (
     <div className={`form form_${props.name}`} >
       <h1 className="form__heading">{props.heading}</h1>
-      <form className="form__form">
+      <form className="form__form" onSubmit={props.onSubmit}>
         <fieldset className="form__fieldset">
           <label className="form__field">
-            <input type="email" name="email" id="email" minLength="2" maxLength="40"
+            <input type="email" value={props.data.email} name="email" id="email" minLength="2" maxLength="40"
               className="form__input form__input_el_email" placeholder="Email"
-              required />
+              required onChange={props.onChange} />
           </label>
           <label className="form__field">
-            <input type="password" name="password" minLength="2" maxLength="40" className="form__input form__input_el_password" placeholder="Пароль" required />
+            <input type="password" value={props.data.password} name="password" minLength="2" maxLength="40" className="form__input form__input_el_password" placeholder="Пароль" required onChange={props.onChange} />
           </label>
         </fieldset>
         <button type="submit" className="form__submit-button" name={`${props.name}-submit-button`}>
