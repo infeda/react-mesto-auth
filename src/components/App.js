@@ -39,7 +39,7 @@ function App() {
       auth.checkToken(jwt)
         .then(res => {
           if(res) {
-            setEmail({email: res.email});
+            setEmail({email: res.data.email});
             setLoggedIn(true);
           }
         })
@@ -142,7 +142,6 @@ function App() {
             setRegisterError(true);
           };
           if(res) {
-            console.log(res);
             setLoggedIn(true);
             localStorage.setItem('jwt', res.token);
           }
@@ -166,7 +165,7 @@ function App() {
     localStorage.removeItem('jwt');
     setEmail({email: ''});
     setLoggedIn(false);
-    history.push('/sign-in')
+    history.push('/sign-in');
   }
 
   return (
@@ -174,7 +173,7 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
 
-            <Header loggedIn={loggedIn} />
+            <Header loggedIn={loggedIn} email={email} onSignOut={handleSignOut} />
             <Switch>
               <ProtectedRoute path="/home" loggedIn={loggedIn} component={Main}
                 onEditProfile={handleEditProfileClick} 

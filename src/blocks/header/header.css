@@ -2,6 +2,8 @@
   width: 70%;
   margin: 45px auto 0;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  display: flex;
+  justify-content: space-between;
 }
 
 @media (max-width: 1079px) {
@@ -15,4 +17,39 @@
     width: 100%;
     margin-top: 28px;
   }
+}
+
+.header__nav {
+  list-style: none;
+  margin: none;
+  padding: none;
+  display: flex;
+}
+
+.header__link {
+  font-weight: 400;
+  font-size: 18px;
+  font-style: normal;
+  padding: 0;
+  transition: opacity 0.3s linear;
+  color: inherit;
+  text-decoration: none;
+}
+
+.header__link_out {
+  color: #A9A9A9;
+  font-weight: 400;
+  margin-left: 24px;
+}
+
+.header__link:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.header__text {
+  font-weight: 500;
+  font-size: 18px;
+  font-style: normal;
+  padding: 0;
 }
