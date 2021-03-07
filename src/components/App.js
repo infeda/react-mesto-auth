@@ -27,8 +27,6 @@ function App() {
   const [succeed, setSucceed] = React.useState(true);
   const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
 
-  console.log(isRegisterPopupOpen);
-
   const [currentUser, setCurrentUser] = React.useState({name: '', avatar: '', about: ''});
   const [email, setEmail] = React.useState({email: ''});
 
@@ -109,7 +107,6 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({name: '', link: ''});
     setIsRegisterPopupOpen(false);
-    console.log('closed');
   }
 
   function handleCardClick(card) {
@@ -185,7 +182,7 @@ function App() {
 
             <Header loggedIn={loggedIn} email={email} onSignOut={handleSignOut} />
             <Switch>
-              <ProtectedRoute path="/home" loggedIn={loggedIn} component={Main}
+              <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main}
                 onEditProfile={handleEditProfileClick} 
                 onAddPlace={handleAddPlaceClick} 
                 onEditAvatar={handleEditAvatarClick} 
@@ -196,13 +193,13 @@ function App() {
                 onSignOut={handleSignOut}
               />
               <Route path="/sign-in">
-                <Login onLogin={handleLogin} setLoggedIn={setLoggedIn} />
+                <Login onLogin={handleLogin} setLoggedIn={setLoggedIn} setEmail={setEmail}/>
               </Route>
               <Route path="/sign-up">
                 <Register onRegister={handleRegister} setLoggedIn={setLoggedIn} />
               </Route>
               <Route path="/">
-                {loggedIn ? <Redirect to="/home" /> : <Redirect to="/sign-up" /> }
+                {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" /> }
               </Route>
             </Switch>
 

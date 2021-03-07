@@ -18,7 +18,6 @@ export const register = (email, password) => {
     }
   })
   .then((res) => {
-    console.log(res);
     return res;
   })
   .catch((err) => console.log(err));
@@ -43,7 +42,6 @@ export const login = (email, password) => {
     }
   })
   .then((res) => {
-    console.log(res);
     return res;
   })
   .catch((err) => console.log(err));
