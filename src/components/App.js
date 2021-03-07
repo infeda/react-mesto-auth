@@ -16,14 +16,18 @@ import ProtectedRoute from './ProtectedRoute';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import Register from './Register';
 import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [registerErr, setRegisterError] = React.useState(false);
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
+  const [succeed, setSucceed] = React.useState(true);
   const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
+
+  console.log(isRegisterPopupOpen);
 
   const [currentUser, setCurrentUser] = React.useState({name: '', avatar: '', about: ''});
   const [email, setEmail] = React.useState({email: ''});
@@ -104,6 +108,8 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({name: '', link: ''});
+    setIsRegisterPopupOpen(false);
+    console.log('closed');
   }
 
   function handleCardClick(card) {
@@ -139,7 +145,7 @@ function App() {
       auth.login(email, password)
         .then(res => {
           if(!res || res.statusCode === 400 || res.statusCode === 401 ) {
-            setRegisterError(true);
+            return;
           };
           if(res) {
             setLoggedIn(true);
@@ -154,11 +160,15 @@ function App() {
       auth.register(email, password)
         .then(res => {
           if(!res || res.statusCode === 400) {
-            setRegisterError(true);
+            setSucceed(false);
+            setIsRegisterPopupOpen(true);
           };
-          return res;
+          if(res) {
+            setSucceed(true);
+            setIsRegisterPopupOpen(true);
+          }
         })
-      )
+    )
   }
 
   function handleSignOut() {
@@ -209,6 +219,8 @@ function App() {
           </PopupWithForm>
 
           <ImagePopup card={selectedCard} onCLose={closeAllPopups}/>
+
+          <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeAllPopups} isSucceed={succeed} />
 
         </div> 
       </CurrentUserContext.Provider>

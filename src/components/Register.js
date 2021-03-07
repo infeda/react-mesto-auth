@@ -17,7 +17,7 @@ export default function Register(props) {
       history.push('/home');
       props.setLoggedIn(true);
     }
-  }, [history]);
+  }, []);
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -32,10 +32,6 @@ export default function Register(props) {
     setData(initialData);
   }
 
-  const openErrorPopup = () => {
-
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -46,9 +42,7 @@ export default function Register(props) {
       .then(() => {
         history.push('/sign-in');
       })
-      .catch(err => {
-        openErrorPopup();
-      })
+      .catch(err => console.log(err));
     
   }
   

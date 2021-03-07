@@ -11,11 +11,9 @@ export default function Login(props) {
   }
 
   const [data, setData] = React.useState(initialData);
-  const [email, setEmail] = React.useState('');
 
   useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      console.log('JWT in localStorage');
       props.setLoggedIn(true);
     }
   }, [history]);
