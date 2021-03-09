@@ -1,25 +1,12 @@
-import React, { useEffect } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import React from 'react';
 
 export default function Login(props) {
-  const history = useHistory();
-
   const initialData = {
     email: '',
     password: ''
   }
 
   const [data, setData] = React.useState(initialData);
-
-  useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      props.setLoggedIn(true);
-    }
-  }, [history]);
-
-  const resetForm = () => {
-    setData(initialData);
-  }
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -33,16 +20,7 @@ export default function Login(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    props.onLogin(data)
-      .then(res => {
-        resetForm();
-      })
-      .then(() => {
-        history.push('/');
-        props.setEmail({email: data.email});
-      })
-      .catch(err => console.log(err));
-
+    props.onLogin(data);
   }
 
   return (

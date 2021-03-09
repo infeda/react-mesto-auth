@@ -12,7 +12,7 @@ export default function InfoTooltip(props) {
           <img className="popup__close-icon" src={closeIcon} alt="закрыть" />
         </button>
         <img src={props.isSucceed ? succeedIcon : deniedIcon} alt="картинка" />
-        <h2 className="popup-container__heading popup-container__heading_register">{`${props.isSucceed ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}`}</h2>
+        <h2 className="popup-container__heading popup-container__heading_register">{`${props.isSucceed ? props.successText : props.notSuccessText}`}</h2>
       </div>
     </div>
   )

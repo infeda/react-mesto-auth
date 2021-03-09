@@ -36,7 +36,7 @@ function App() {
   const history = useHistory();
 
   function checkToken() {
-    let jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth.checkToken(jwt)
         .then(res => {
@@ -147,6 +147,8 @@ function App() {
           if(res) {
             setLoggedIn(true);
             localStorage.setItem('jwt', res.token);
+            history.push('/');
+            setEmail({email: email});
           }
         })
     )
@@ -163,6 +165,7 @@ function App() {
           if(res) {
             setSucceed(true);
             setIsRegisterPopupOpen(true);
+            history.push('/sign-in');
           }
         })
     )
@@ -217,7 +220,7 @@ function App() {
 
           <ImagePopup card={selectedCard} onCLose={closeAllPopups}/>
 
-          <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeAllPopups} isSucceed={succeed} />
+          <InfoTooltip isOpen={isRegisterPopupOpen} onClose={closeAllPopups} isSucceed={succeed} successText="Вы успешно зарегистрировались!" notSuccessText="Что-то пошло не так! Попробуйте ещё раз." />
 
         </div> 
       </CurrentUserContext.Provider>
