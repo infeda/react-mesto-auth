@@ -7,13 +7,20 @@ export const register = (email, password) => {
     },
     body: JSON.stringify({password, email})
 })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  .then((response) => {
+    try {
+      if (response.status === 201){
+        return response.json();
       }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
+    } catch(e){
+      return (e)
+    }
   })
-}; 
+  .then((res) => {
+    return res;
+  })
+  .catch((err) => console.log(err));
+};
 
 export const login = (email, password) => {
   return fetch('https://auth.nomoreparties.co/signin', {
@@ -23,13 +30,20 @@ export const login = (email, password) => {
     },
     body: JSON.stringify({password, email})
 })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  .then((response) => {
+    try {
+      if (response.status === 201){
+        return response.json();
       }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-    })
-}; 
+    } catch(e){
+      return (e)
+    }
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((err) => console.log(err));
+};
 
 export const checkToken = (jwt) => {
   return fetch('https://auth.nomoreparties.co/users/me', {
@@ -39,10 +53,17 @@ export const checkToken = (jwt) => {
       "Authorization" : `Bearer ${jwt}`
     }
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  .then((response) => {
+    try {
+      if (response.status === 200){
+        return response.json();
       }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
+    } catch(e){
+      return (e)
+    }
   })
+  .then((res) => {
+    return res;
+  })
+  .catch((err) => console.log(err));
 }; 
